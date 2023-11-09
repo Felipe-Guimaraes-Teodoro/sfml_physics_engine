@@ -1,3 +1,4 @@
+#include <cstdlib>
 float WJ_2 = 500.0; 
 float HJ_2 = 500.0;
 
@@ -12,10 +13,13 @@ class Particle {
         float ox,
         float oy,
         float r,
-        float frictio
+        float frictio,
+        float time
       ) {
       this->x = x;
       this->y = y;
+
+      this->time = time;
 
       this->radius = r;
 
@@ -26,8 +30,6 @@ class Particle {
       this->vy = y-oy; // (is ...)
 
       this->frictio = frictio;
-
-      this->color = sf::Color::Red;
 
       this->shape.setRadius(this->radius);
       this->shape.setFillColor(this->color);
@@ -53,6 +55,14 @@ class Particle {
       this->y += vy;
 
       this->Constrain();
+
+      this->color.r = abs(this->x - 500.0)/5;
+      this->color.g = this->y/5;
+      this->color.b = int(this->time / 50.0) % 256;
+
+      this->shape.setFillColor(this->color);
+
+      this->time++;
     }
 
     void Constrain() {
@@ -85,6 +95,7 @@ class Particle {
     }
 
     float x,y;
+    float time;
   private:
     float radius;
     float frictio; // this is frictioN
